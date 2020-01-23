@@ -13,7 +13,8 @@ const http = axios.create({
 function App() {
   const [greeting, setGreeting] = useState();
   useEffect(() => {
-    http.get('/').then((response) => {
+    console.log('NODE_ENV', process.env.NODE_ENV);
+    http.get('/test').then((response) => {
       setGreeting(response.data);
       console.log('test');
     })
