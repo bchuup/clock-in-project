@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server & (cd client && npm start)"
+    "start": "node server & (cd client && npm start)",
+    "postinstall": "(cd client && npm install); (cd server && npm install)"
   },
   "repository": {
     "type": "git",
@@ -21,17 +22,4 @@
     "url": "https://github.com/bchuup/clock-in-project/issues"
   },
   "homepage": "https://github.com/bchuup/clock-in-project#readme",
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "axios": "^0.19.2",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "path": "^0.12.7",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
-  }
 }
