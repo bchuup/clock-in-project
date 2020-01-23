@@ -4,12 +4,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const PORT = process.env.SERVER_PORT || 8080;
+// const PORT = process.env.PORT || 8080;
 
-const config = {
-  port: PORT,
-  host: '0.0.0.0',
-};
+// const config = {
+//   port: PORT,
+//   host: '0.0.0.0',
+// };
 
 // TODO: prep knex in parent folder
 // knex = require('knex')({
