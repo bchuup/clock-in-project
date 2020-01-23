@@ -3,10 +3,17 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+// if in prod use prod url else use http://localhost:8080
+const http = axios.create({
+  baseURL: process.env.CLIENT_ENV === 'PRODUCTION' 
+    ? 'https://clock-in-project.herokuapp.com/'
+    : 'http://localhost:8080'
+});
+
 function App() {
   const [greeting, setGreeting] = useState();
   useEffect(() => {
-    axios.get('http://localhost:8080/').then((response) => {
+    http.get('/').then((response) => {
       setGreeting(response.data);
       console.log('test');
     })

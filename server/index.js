@@ -7,6 +7,7 @@ const config = {
   host: '0.0.0.0',
 };
 
+
 // knex = require('knex')({
 //   client: 'pg',
 //   connection: {
@@ -30,7 +31,6 @@ const config = {
 // })
 
 const app = express();
-
 app.use(bodyParser.json());
 app.use(cors());
 
