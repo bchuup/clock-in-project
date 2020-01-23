@@ -35,7 +35,11 @@ app.use(cors());
 app.use('/api', apiRoutes);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  } else {
+    res.end()
+  }
 });
 const PORT = process.env.PORT || 8080
 
