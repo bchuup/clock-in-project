@@ -35,23 +35,23 @@ const config = {
 // })
 
 const app = express();
-app.use(express.static("public"));
+// app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/api', (req, res) => {
   const environment = process.env.NODE_ENV === "production"
     ? ' production'
-    : ' environment'
+    : ' development'
   return res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + environment)
   // knex('users').where('id', 1).then((user) => {
   //   res.status(200).send({ user })
   // })
 });
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname + 'server/public/index.html'));
-});
+// app.get('*', function (req, res) {
+//   res.sendFile(path.join(__dirname + 'server/public/index.html'));
+// });
 
 app.listen(config.port, () => {
   console.log('listening on port ' + PORT);
