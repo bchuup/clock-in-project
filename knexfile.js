@@ -8,5 +8,10 @@ module.exports = {
     migrations: {
       directory: __dirname + '/knex/migrations'
     }
+  },
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    ssl: true
   }
 }
