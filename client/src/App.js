@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-// if in prod use prod url else use http://localhost:8080
 const http = axios.create({
   baseURL: process.env.NODE_ENV === 'production' 
     ? 'http://clock-in-ben-chu.herokuapp.com'
@@ -13,7 +12,6 @@ const http = axios.create({
 function App() {
   const [greeting, setGreeting] = useState();
   useEffect(() => {
-    console.log('NODE_ENV', process.env.NODE_ENV);
     http.get('/api').then((res) => {
       setGreeting(res.data);
     })
