@@ -39,10 +39,6 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname + '/public/index.html'));
-});
-
 app.get('/api', (req, res) => {
   const environment = process.env.NODE_ENV === "production"
     ? ' production'
@@ -51,6 +47,10 @@ app.get('/api', (req, res) => {
   // knex('users').where('id', 1).then((user) => {
   //   res.status(200).send({ user })
   // })
+});
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 app.listen(config.port, () => {
