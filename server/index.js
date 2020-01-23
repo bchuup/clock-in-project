@@ -47,4 +47,4 @@ app.get('/', (req, res) => {
   // })
 });
 
-app.listen(config.port, config.host);
+app.listen(config.port);
