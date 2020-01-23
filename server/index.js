@@ -39,7 +39,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + process.env.NODE_ENV)
+  const environment = process.env.NODE_ENV === 'production'
+    ? ' production'
+    : ' environment'
+  res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + environment)
   // knex('users').where('id', 1).then((user) => {
   //   res.status(200).send({ user })
   // })
