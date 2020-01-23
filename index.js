@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 // const bodyParser = require('body-parser');
 const cors = require('cors');
+const apiRoutes = require('./routes');
 
 // TODO: prep knex in parent folder
 // knex = require('knex')({
@@ -31,24 +32,15 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use(bodyParser.json());
 app.use(cors());
-
-app.get('/api', (req, res) => {
-  const environment = process.env.NODE_ENV === "production"
-    ? ' production'
-    : ' development'
-  res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + environment)
-  // knex('users').where('id', 1).then((user) => {
-  //   res.status(200).send({ user })
-  // })
-});
+app.use('/api', apiRoutes);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  } else {
+    res.end()
+  }
 });
-// app.get('*', function (req, res) {
-//   res.sendFile(path.join(__dirname + 'server/public/index.html'));
-// });
-
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => {

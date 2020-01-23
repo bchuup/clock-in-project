@@ -1,4 +1,5 @@
 import axios from 'axios';
+// @ts-ignore
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -13,9 +14,15 @@ function App() {
   const [greeting, setGreeting] = useState();
   useEffect(() => {
     http.get('/api').then((res) => {
+      console.log('res', res);
       setGreeting(res.data);
     })
-  })
+  }, []);
+  useEffect(() => {
+    http.get('/api/users').then((res) => {
+      console.log(res);
+    })
+  }, [])
   return (
     <div className="App">
       <header className="App-header">
