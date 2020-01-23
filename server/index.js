@@ -50,7 +50,7 @@ app.get('/api', (req, res) => {
 });
 
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname + '/public/index.html'));
+  res.sendFile(path.join(__dirname + 'server/public/index.html'));
 });
 
 app.listen(config.port, () => {
