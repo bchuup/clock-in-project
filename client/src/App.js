@@ -14,9 +14,8 @@ function App() {
   const [greeting, setGreeting] = useState();
   useEffect(() => {
     console.log('NODE_ENV', process.env.NODE_ENV);
-    http.get('/test').then((response) => {
-      setGreeting(response.data);
-      console.log('test');
+    http.get('/api').then((res) => {
+      setGreeting(res.data);
     })
   })
   return (
