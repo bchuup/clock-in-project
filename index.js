@@ -56,6 +56,6 @@ app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname + 'server/public/index.html'));
 // });
 
-app.listen(config.port, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log('listening on port ' + PORT);
 });
