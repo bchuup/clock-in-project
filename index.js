@@ -34,13 +34,13 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(cors());
 app.use('/api', apiRoutes);
 
-app.get('*', (req, res) => {
-  if (process.env.NODE_ENV === 'production') {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
-  } else {
-    res.end()
-  }
-});
+// app.get('*', (req, res) => {
+//   if (process.env.NODE_ENV === 'production') {
+//     res.sendFile(path.join(__dirname + '/client/build/index.html'));
+//   } else {
+//     res.end()
+//   }
+// });
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => {
