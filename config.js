@@ -1,5 +1,5 @@
 module.exports = {
-  environment: process.env.NODE_ENV || 'DEVELOPMENT',
+  environment: process.env.NODE_ENV || 'development',
   development: {
     url: 'dev postgres url',
     dialect: 'postgres',
