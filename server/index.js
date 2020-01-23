@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const PORT = process.env.SERVER_PORT || 8080;
 
-const serverConfig = {
+const config = {
   port: PORT,
   host: '0.0.0.0',
 };
@@ -41,10 +41,10 @@ app.get('/', (req, res) => {
   const environment = process.env.NODE_ENV === "production"
     ? ' production'
     : ' environment'
-  res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + environment)
+  return res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + environment)
   // knex('users').where('id', 1).then((user) => {
   //   res.status(200).send({ user })
   // })
 });
 
-app.listen(serverConfig.port, serverConfig.host);
+app.listen(config.port, config.host);
