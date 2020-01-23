@@ -37,7 +37,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
   const environment = process.env.NODE_ENV === "production"
     ? ' production'
     : ' environment'
