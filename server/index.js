@@ -1,9 +1,13 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const PORT = process.env.PORT || 8080;
+
 const config = {
-  port: 8080,
+  port: PORT,
   host: '0.0.0.0',
 };
 
@@ -35,7 +39,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.status(200).send('HELLO FROM BACKEND')
+  res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + process.env.NODE_ENV)
   // knex('users').where('id', 1).then((user) => {
   //   res.status(200).send({ user })
   // })
