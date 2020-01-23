@@ -1,17 +1,17 @@
 require('dotenv').config();
-
+const environmentConfig = require('../config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const PORT = process.env.SERVER_PORT || 8080;
 
-const config = {
+const serverConfig = {
   port: PORT,
   host: '0.0.0.0',
 };
 
-
+// TODO: prep knex in parent folder
 // knex = require('knex')({
 //   client: 'pg',
 //   connection: {
@@ -39,7 +39,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  const environment = process.env.NODE_ENV === 'production'
+  const environment = environmentConfig.environment === "production"
     ? ' production'
     : ' environment'
   res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + environment)
@@ -48,4 +48,4 @@ app.get('/', (req, res) => {
   // })
 });
 
-app.listen(config.port, config.host);
+app.listen(serverConfig.port, serverConfig.host);
