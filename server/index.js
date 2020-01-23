@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  const environment = process.env.NODE_ENV === "PRODUCTION"
+  const environment = process.env.NODE_ENV === "production"
     ? ' production'
     : ' environment'
   res.status(200).send('HELLO FROM BACKEND PORT: ' + PORT + environment)

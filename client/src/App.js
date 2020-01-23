@@ -5,7 +5,7 @@ import './App.css';
 
 // if in prod use prod url else use http://localhost:8080
 const http = axios.create({
-  baseURL: process.env.NODE_ENV === 'PRODUCTION' 
+  baseURL: process.env.NODE_ENV === 'production' 
     ? 'http://clock-in-project.herokuapp.com'
     : 'http://localhost:8080'
 });
