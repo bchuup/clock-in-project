@@ -37,7 +37,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname + '/public/index.html'));
+});
+
+app.get('/api', (req, res) => {
   const environment = process.env.NODE_ENV === "production"
     ? ' production'
     : ' environment'
