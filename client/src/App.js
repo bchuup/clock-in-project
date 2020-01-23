@@ -7,7 +7,7 @@ import './App.css';
 const http = axios.create({
   baseURL: process.env.NODE_ENV === 'production' 
     ? 'http://clock-in-project.herokuapp.com/api'
-    : 'http://localhost:8080/api'
+    : 'http://localhost:8080'
 });
 
 function App() {
