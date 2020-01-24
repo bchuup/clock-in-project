@@ -5,13 +5,11 @@ module.exports = {
       host: 'localhost',
       database: 'clock_in_db'
     },
-    migrations: {
-      directory: __dirname + '/knex/migrations'
-    }
   },
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
-    ssl: true
+    searchPath: 'knex,public',
+    pool: { min: 0, max: 7 }
   }
 }

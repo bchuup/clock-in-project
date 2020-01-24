@@ -14,13 +14,12 @@ function App() {
   const [greeting, setGreeting] = useState();
   useEffect(() => {
     http.get('/api').then((res) => {
-      console.log('res', res);
       setGreeting(res.data);
     })
   }, []);
   useEffect(() => {
     http.get('/api/users').then((res) => {
-      console.log(res);
+      console.log('hello', res);
     })
   }, [])
   return (
