@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FunctionComponent } from 'react';
 import SubPageLayout from '../layouts/SubPageLayout';
 import styled from 'styled-components';
 import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
@@ -7,6 +7,7 @@ import http from '../http';
 import { useParams } from 'react-router-dom';
 import { Shift } from '../models';
 import orderBy from 'lodash/orderBy';
+import { sign } from 'crypto';
 
 const NewShiftBox = styled.div`
   max-width: 400px;
@@ -32,6 +33,24 @@ const ShiftButton = styled(Button)`
     margin-bottom: 1em;
   }
 `
+interface ShiftSignInButtonProps {
+  signDate?: string | null, 
+  signOut?: boolean
+}
+
+const ShiftSignInButtonText: FunctionComponent<ShiftSignInButtonProps> = ({ signDate, signOut }) => {
+  if (signDate) {
+    return (
+      <div>
+        <p>{signOut ? 'signed out' : 'signed in'}</p>
+        <p>{signDate && moment(signDate || '').format('LT')}</p>
+      </div>
+    )
+  }
+  return signOut 
+    ? <p>set sign out date</p>
+    : <p>set sign in date</p>;
+} 
 
 const ClockInPage: React.FunctionComponent = () => {
   const [isShiftDialogOpen, setShiftDialogOpen] = useState(false);
@@ -45,48 +64,30 @@ const ClockInPage: React.FunctionComponent = () => {
     });
   }, []);
   const submitForNewShift = () => {
-    console.log('run post here - it should create new shift');
+    const userId = params.userId;
+    const newShift = {
+      sign_in_date: moment().toISOString(),
+      user_id: userId
+    }
+    http.post(`/api/shifts/${userId}/new-shift`, newShift).then((res) => {
+      const updatedShifts = shifts.concat(res.data);
+      setShifts(updatedShifts);
+    });
   }
   return (
     <div> 
       <NewShiftBox>
         <ShiftButton onClick={() => setShiftDialogOpen(true)} size="large" color="primary"> sign in now </ShiftButton>
       </NewShiftBox>
-      {shifts.map((s) => (
+      {shifts.map((s: Shift) => (
         <div style={{textAlign: 'center'}} key={s.created_at}>
-          <p>
-            {moment(s.sign_in_date || '').format('LL')}
-          </p>
+          <p>{moment(s.sign_in_date || '').format('LL')}</p>
           <ShiftBox>
             <ShiftButton>
-              {
-                (() => {
-                  if (s.sign_in_date) {
-                    return (
-                      <div>
-                        <p>signed in</p>
-                        <p>{s.sign_in_date && moment(s.sign_in_date || '').format('LT')}</p>
-                      </div>
-                    )
-                  }
-                  return <p>set sign in date</p>;
-                })()
-              }
+              <ShiftSignInButtonText signDate={s.sign_in_date}/>
             </ShiftButton>
             <ShiftButton>
-              {
-                (() => {
-                  if (s.sign_out_date) {
-                    return (
-                      <div>
-                        <p>signed in</p>
-                        <p>{s.sign_out_date && moment(s.sign_out_date || '').format('LT')}</p>
-                      </div>
-                    )
-                  }
-                  return <p>set sign out date</p>;
-                })()
-              }
+              <ShiftSignInButtonText signDate={s.sign_out_date} signOut={true} />
             </ShiftButton>
           </ShiftBox>
         </div>
