@@ -1,8 +1,14 @@
 import axios from 'axios';
-// @ts-ignore
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import Home from './components/Home.js'
+import MainPageLayout from './layouts/MainPageLayout';
+import ClockInPage from './components/ClockInPage';
 
 const http = axios.create({
   baseURL: process.env.NODE_ENV === 'production' 
@@ -18,24 +24,23 @@ function App() {
     })
   }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>{greeting}</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <div>
+          <Link to="/">Home</Link>
+          <Link to="/clock-in-page">users</Link>
+          <Switch>
+            <Route path="/" exact>
+              <Home/>
+            </Route>
+            <Route path="/clock-in-page" exact>
+              <ClockInPage/>
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 }
 
-export default App;
+export default MainPageLayout(App);
