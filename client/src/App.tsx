@@ -33,7 +33,7 @@ function App() {
           <Route path="/" exact>
             <Home users={users} setUsers={setUsers}/>
           </Route>
-          <Route path="/clock-in-page/:name" exact>
+          <Route path="/clock-in-page/:userId" exact>
             <ClockInPage/>
           </Route>
         </Switch>
