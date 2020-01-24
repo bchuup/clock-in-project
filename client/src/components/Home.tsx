@@ -81,7 +81,6 @@ const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
   return (
     <div> 
       <NameInputRow>
-        {/* add filtering of list */}
         <Input
           onKeyDown={openNameEntryDialog}
           onChange={(e: any) => setNewName(e.currentTarget.value)}

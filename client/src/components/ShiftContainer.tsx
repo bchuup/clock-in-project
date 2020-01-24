@@ -85,8 +85,8 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
   const editShift = () => {
     setEditType(null);
     const payload = editType === 'in'
-      ? { sign_in_date: signInField }
-      : { sign_out_date: signOutField }
+      ? { sign_in_date: moment(signInField).toISOString }
+      : { sign_out_date: moment(signOutField).toISOString }
     http.put(
       `/api/shifts/${shift.user_id}/edit/${shift.id}`,
       payload
@@ -108,7 +108,6 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
     }).catch((e) => {
       console.error(e);
     });
-    console.log('delete shift');
   };
   const defaultTime = () => {
     const signInDate = shift.sign_in_date || undefined;
