@@ -11,6 +11,19 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/:userId', async (req, res) => {
+  try {
+    const existingUser = await knex('users').where({ id: req.params.userId }).first();
+    if (existingUser) {
+      res.send(existingUser);
+    } else {
+      res.sendStatus(400);
+    }
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+})
+
 router.post('/', async (req, res) => {
   try {
     const newName = req.body.name.toLowerCase().trim();

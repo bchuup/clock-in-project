@@ -5,13 +5,17 @@ import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
 import moment from 'moment';
 import http from '../http';
 import { useParams } from 'react-router-dom';
-import { Shift } from '../models';
+import { User, Shift } from '../models';
 import orderBy from 'lodash/orderBy';
-import { sign } from 'crypto';
+import ShiftContainer from './ShiftContainer';
+
+const Header = styled.div`
+  padding: 3em;
+`
 
 const NewShiftBox = styled.div`
   max-width: 400px;
-  min-height: 30vh;
+  min-height: 20vh;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -28,7 +32,6 @@ const ShiftBox = styled.div`
 
 const ShiftButton = styled(Button)`
   && {
-    color: #54494B;
     text-transform: lowercase;
     margin-bottom: 1em;
   }
@@ -54,8 +57,16 @@ const ShiftSignInButtonText: FunctionComponent<ShiftSignInButtonProps> = ({ sign
 
 const ClockInPage: React.FunctionComponent = () => {
   const [isShiftDialogOpen, setShiftDialogOpen] = useState(false);
+  const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const params = useParams() as unknown as { userId: number };
   const [shifts, setShifts] = useState<Shift[]>([]);
+  const [user, setUser] = useState<User>({} as User)
+  useEffect(() => {
+    const userId = params.userId;
+    http.get(`/api/users/${userId}`).then((res) => {
+      setUser(res.data);
+    });
+  }, []);
   useEffect(() => {
     const userId = params.userId;
     http.get(`/api/shifts/${userId}`).then((res) => {
@@ -70,27 +81,21 @@ const ClockInPage: React.FunctionComponent = () => {
       user_id: userId
     }
     http.post(`/api/shifts/${userId}/new-shift`, newShift).then((res) => {
-      const updatedShifts = shifts.concat(res.data);
+      const updatedShifts = res.data.concat(shifts);
       setShifts(updatedShifts);
+      setShiftDialogOpen(false);
     });
   }
   return (
     <div> 
+      <Header>
+        <h1 style={{textAlign: 'center'}}> Welcome { user.full_name }! </h1>
+      </Header>
       <NewShiftBox>
         <ShiftButton onClick={() => setShiftDialogOpen(true)} size="large" color="primary"> sign in now </ShiftButton>
       </NewShiftBox>
       {shifts.map((s: Shift) => (
-        <div style={{textAlign: 'center'}} key={s.created_at}>
-          <p>{moment(s.sign_in_date || '').format('LL')}</p>
-          <ShiftBox>
-            <ShiftButton>
-              <ShiftSignInButtonText signDate={s.sign_in_date}/>
-            </ShiftButton>
-            <ShiftButton>
-              <ShiftSignInButtonText signDate={s.sign_out_date} signOut={true} />
-            </ShiftButton>
-          </ShiftBox>
-        </div>
+        <ShiftContainer key={s.id} shift={s} />
       ))}
       <Dialog open={isShiftDialogOpen} onClose={() => setShiftDialogOpen(false)}>
         <DialogContent>
