@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Button, Dialog, DialogContent, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogContent, IconButton, TextField } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import { Shift } from '../models';
 import http from '../http';
@@ -17,6 +18,22 @@ const ShiftButton = styled(Button)`
     color: #54494B;
     text-transform: lowercase;
     margin-bottom: 1em;
+  }
+`
+
+const ShiftTitleRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  && > p {
+    margin:  20px;
+  }
+  && button {
+    opacity: 20%;
+  }
+  &&:hover button {
+    opacity: 100%;
+    color: #B33951;
   }
 `
  
@@ -50,6 +67,7 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
   const [editType, setEditType] = useState<EditType>(null);
   const [signInField, setSignInField] = useState<string>('');
   const [signOutField, setSignOutField] = useState<string>('');
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   useEffect(() => {
     const now = moment().toISOString();
     setSignInField(shift.sign_in_date || now);
@@ -91,7 +109,14 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
   }
   return (
     <div style={{ textAlign: 'center' }} key={shift.created_at}>
-      <p>{moment(shift.sign_in_date || '').format('LL')}</p>
+      <ShiftTitleRow>
+        <p>{moment(shift.sign_in_date || '').format('LL')}</p>
+        <div>
+          <IconButton size="small">
+            <DeleteIcon />
+          </IconButton>
+        </div>
+      </ShiftTitleRow>
       <ShiftBox>
         <ShiftButton onClick={() => setEditType('in')}>
           <ShiftSignInButtonText signDate={shift.sign_in_date} />
@@ -109,6 +134,18 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
           />
         </DialogContent>
         <ShiftButton onClick={() => editShift()} size="large" color="primary"> 
+          {editType === 'in' ? 'edit sign in date' : 'sign out'}
+        </ShiftButton>
+      </Dialog>
+      <Dialog open={isDeleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogContent>
+          <TextField
+            type="datetime-local"
+            defaultValue={defaultTime()}
+            onChange={handleFieldChange}
+          />
+        </DialogContent>
+        <ShiftButton onClick={() => editShift()} size="large" color="primary">
           {editType === 'in' ? 'edit sign in date' : 'sign out'}
         </ShiftButton>
       </Dialog>
