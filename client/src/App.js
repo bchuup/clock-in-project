@@ -13,11 +13,6 @@ const http = axios.create({
 function App() {
   const [greeting, setGreeting] = useState();
   useEffect(() => {
-    http.get('/api').then((res) => {
-      setGreeting(res.data);
-    })
-  }, []);
-  useEffect(() => {
     http.get('/api/users').then((res) => {
       console.log('hello', res);
     })
