@@ -3,9 +3,13 @@ const router = express.Router();
 const knex = require('../db/knex');
 
 router.get('/', function (req, res) {
-  knex('users').then((users) => {
-    res.send(users);
-  });
+  knex.select().table('users').then((u) => {
+    console.log('users', u);
+    res.send(u);
+
+  })
+  // knex('users').then((users) => {
+  // });
 })
 
 module.exports = router;

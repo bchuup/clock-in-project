@@ -32,11 +32,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use(bodyParser.json());
 app.use(cors());
-app.use('/', (req, res) => {
-  res.end();
-});
 app.use('/api', apiRoutes);
-
 app.get('*', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname + '/client/build/index.html'));
