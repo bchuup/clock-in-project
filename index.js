@@ -33,12 +33,16 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 // app.use(bodyParser.json());
 app.use(cors());
 app.use('/api', apiRoutes);
+
+// app.use('/', (req, res) => {
+//   res.end();
+// });
+// if (process.env.NODE_ENV === 'production') {
+// } else {
+//   res.end();
+// }
 app.get('*', (req, res) => {
-  if (process.env.NODE_ENV === 'production') {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
-  } else {
-    res.end();
-  }
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 const PORT = process.env.PORT || 8080;
 
