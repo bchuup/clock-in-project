@@ -84,9 +84,11 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
   }
   const editShift = () => {
     setEditType(null);
+    const signIn = new Date(signInField).toISOString()
+    const signOut = new Date(signOutField).toISOString()
     const payload = editType === 'in'
-      ? { sign_in_date: moment.utc(signInField).format() }
-      : { sign_out_date: moment.utc(signOutField).format() }
+      ? { sign_in_date: signIn }
+      : { sign_out_date: signOut }
     http.put(
       `/api/shifts/${shift.user_id}/edit/${shift.id}`,
       payload
