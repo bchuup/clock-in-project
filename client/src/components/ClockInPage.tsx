@@ -1,10 +1,11 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import SubPageLayout from '../layouts/SubPageLayout';
 import styled from 'styled-components';
-import { Button, Dialog, DialogContent } from '@material-ui/core';
+import { Button, IconButton, Dialog, DialogContent } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import moment from 'moment';
 import http from '../http';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { User, Shift } from '../models';
 import orderBy from 'lodash/orderBy';
 import ShiftContainer from './ShiftContainer';
@@ -41,25 +42,12 @@ interface ShiftSignInButtonProps {
   signOut?: boolean
 }
 
-const ShiftSignInButtonText: FunctionComponent<ShiftSignInButtonProps> = ({ signDate, signOut }) => {
-  if (signDate) {
-    return (
-      <div>
-        <p>{signOut ? 'signed out' : 'signed in'}</p>
-        <p>{signDate && moment(signDate || '').format('LT')}</p>
-      </div>
-    )
-  }
-  return signOut 
-    ? <p>set sign out date</p>
-    : <p>set sign in date</p>;
-} 
-
 const ClockInPage: React.FunctionComponent = () => {
   const [isShiftDialogOpen, setShiftDialogOpen] = useState(false);
   const params = useParams() as unknown as { userId: number };
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [user, setUser] = useState<User>({} as User)
+  const history = useHistory();
   useEffect(() => {
     const userId = params.userId;
     http.get(`/api/users/${userId}`).then((res) => {
@@ -103,6 +91,9 @@ const ClockInPage: React.FunctionComponent = () => {
   }
   return (
     <div> 
+      <IconButton onClick={() => history.push(`/`)} style={{margin: '2em'}}> 
+        <ArrowBackIcon/> 
+      </IconButton>
       <Header>
         <h1 style={{textAlign: 'center'}}> Welcome { user.full_name }! </h1>
       </Header>
