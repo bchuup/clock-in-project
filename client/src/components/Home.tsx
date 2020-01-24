@@ -43,19 +43,23 @@ interface Props {
 const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
   const [newName, setNewName] = useState('');
   const [homeUsers, setHomeUsers] = useState<User[]>([]);
-  const [dialogIsOpen, setDialogOpen] = useState(false);
+  const [newUserDialogIsOpen, setNewUserDialogOpen] = useState(false);
+  const [errorDialogIsOpen, setErrorDialogIsOpen] = useState(false);
   const history = useHistory();
   useEffect(() => {
     const orderedUsers = orderBy(users, ['created_at'], ['desc'])
     setHomeUsers(orderedUsers);
   }, [users]) 
 
-  const handleClose = () => {
-    setDialogOpen(false); 
+  const handleCloseNewUserDialog = () => {
+    setNewUserDialogOpen(false); 
+  }
+  const handleCloseErrorDialog = () => {
+    setErrorDialogIsOpen(false); 
   }
   const openNameEntryDialog = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
-      setDialogOpen(true);
+      setNewUserDialogOpen(true);
     }
   }
 
@@ -63,10 +67,11 @@ const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
     http.post('/api/users', { name: newName }).then((res) => {
       const updatedUsers = users.concat(res.data);
       setUsers(updatedUsers);
-      setDialogOpen(false);
       history.push(`/clock-in-page/${res.data[0].id}`);
     }).catch(e => {
       console.log('error', e);
+      setNewUserDialogOpen(false);
+      setErrorDialogIsOpen(true);
     })
   }
 
@@ -93,13 +98,22 @@ const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
         )
       })}
       </UserList>
-      <Dialog onClose={handleClose} open={dialogIsOpen}>
+      <Dialog onClose={handleCloseNewUserDialog} open={newUserDialogIsOpen}>
         <DialogTitle> Would you like to enter as a new user? </DialogTitle>
         <DialogContent style={{textAlign: 'center'}}>
           {newName}
         </DialogContent>
         <DialogActions style={{ justifyContent: 'center' }}>
           <UserButton onClick={submitNewUser}> OK </UserButton>
+        </DialogActions>
+      </Dialog>
+      <Dialog onClose={handleCloseErrorDialog} open={errorDialogIsOpen}>
+        <DialogTitle> This name is taken! try another. </DialogTitle>
+        <DialogContent style={{textAlign: 'center'}}>
+          {newName}
+        </DialogContent>
+        <DialogActions style={{ justifyContent: 'center' }}>
+          <UserButton onClick={handleCloseErrorDialog}> OK </UserButton>
         </DialogActions>
       </Dialog>
     </div>
