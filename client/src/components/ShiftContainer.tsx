@@ -79,14 +79,14 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
       setSignInField(e.currentTarget.value)
     }
     if (editType === 'out') {
-      setSignOutField(e.currentTarget.value)
+      setSignOutField(e.currentTarget.value);
     }
   }
   const editShift = () => {
     setEditType(null);
     const payload = editType === 'in'
-      ? { sign_in_date: moment(signInField).toISOString }
-      : { sign_out_date: moment(signOutField).toISOString }
+      ? { sign_in_date: moment.utc(signInField).format() }
+      : { sign_out_date: moment.utc(signOutField).format() }
     http.put(
       `/api/shifts/${shift.user_id}/edit/${shift.id}`,
       payload
@@ -113,12 +113,12 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
     const signInDate = shift.sign_in_date || undefined;
     const signOutDate = shift.sign_out_date || undefined;
     if (editType === 'in') {  
-      return moment(signInDate).format('YYYY-MM-DDTHH:mm');
+      return moment.utc(signInDate).local().format('YYYY-MM-DDTHH:mm');
     }
     if (editType === 'out') {
-      return moment(signOutDate).format('YYYY-MM-DDTHH:mm');
+      return moment.utc(signOutDate).local().format('YYYY-MM-DDTHH:mm');
     }
-    return moment().format('YYYY-MM-DDTHH:mm');
+    return moment.utc().local().format('YYYY-MM-DDTHH:mm');
   }
   return (
     <div style={{ textAlign: 'center' }} key={shift.created_at}>
