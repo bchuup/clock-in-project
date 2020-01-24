@@ -50,7 +50,7 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift }) => {
   const [signInField, setSignInField] = useState<string>('');
   const [signOutField, setSignOutField] = useState<string>('');
   useEffect(() => {
-    const now = moment().format('YYYY-MM-DDThh:mm');
+    const now = moment().toISOString();
     setSignInField(shift.sign_in_date || now);
     setSignOutField(shift.sign_out_date || now);
   }, [])
@@ -72,22 +72,21 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift }) => {
       `/api/shifts/${shift.user_id}/edit/${shift.id}`,
       payload
     ).then((res) => {
+      
       console.log('res', res.data);
     });
-    console.log('sign in', signInField);
-    console.log('sign out', signOutField);
     
   };
   const defaultTime = () => {
     const signInDate = shift.sign_in_date || undefined;
     const signOutDate = shift.sign_out_date || undefined;
     if (editType === 'in') {  
-      return moment(signInDate).format('YYYY-MM-DDThh:mm');
+      return moment(signInDate).format('YYYY-MM-DDTHH:mm');
     }
     if (editType === 'out') {
-      return moment(signOutDate).format('YYYY-MM-DDThh:mm');
+      return moment(signOutDate).format('YYYY-MM-DDTHH:mm');
     }
-    return moment().format('YYYY-MM-DDThh:mm');
+    return moment().format('YYYY-MM-DDTHH:mm');
   }
   return (
     <div style={{ textAlign: 'center' }} key={shift.created_at}>
