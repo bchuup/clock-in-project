@@ -57,7 +57,6 @@ const ShiftSignInButtonText: FunctionComponent<ShiftSignInButtonProps> = ({ sign
 
 const ClockInPage: React.FunctionComponent = () => {
   const [isShiftDialogOpen, setShiftDialogOpen] = useState(false);
-  const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const params = useParams() as unknown as { userId: number };
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [user, setUser] = useState<User>({} as User)
@@ -65,6 +64,8 @@ const ClockInPage: React.FunctionComponent = () => {
     const userId = params.userId;
     http.get(`/api/users/${userId}`).then((res) => {
       setUser(res.data);
+    }).catch((e) => {
+      console.error(e);
     });
   }, []);
   useEffect(() => {
@@ -72,6 +73,8 @@ const ClockInPage: React.FunctionComponent = () => {
     http.get(`/api/shifts/${userId}`).then((res) => {
       const orderedShifts = orderBy(res.data, ['sign_in_date'], ['desc'])
       setShifts(orderedShifts);
+    }).catch((e) => {
+      console.error(e);
     });
   }, []);
   const submitForNewShift = () => {
@@ -84,7 +87,19 @@ const ClockInPage: React.FunctionComponent = () => {
       const updatedShifts = res.data.concat(shifts);
       setShifts(updatedShifts);
       setShiftDialogOpen(false);
+    }).catch((e) => {
+      setShiftDialogOpen(false);
+      console.error(e);
     });
+  }
+  const updateShifts = (incomingShift: Shift) => {
+    const newShifts = shifts.map((s) => {
+      return s.id === incomingShift.id
+        ? incomingShift
+        : s
+    })
+    const orderedShifts = orderBy(newShifts, ['sign_in_date'], ['desc']);
+    setShifts(orderedShifts);
   }
   return (
     <div> 
@@ -95,7 +110,11 @@ const ClockInPage: React.FunctionComponent = () => {
         <ShiftButton onClick={() => setShiftDialogOpen(true)} size="large" color="primary"> sign in now </ShiftButton>
       </NewShiftBox>
       {shifts.map((s: Shift) => (
-        <ShiftContainer key={s.id} shift={s} />
+        <ShiftContainer 
+          key={s.id} 
+          shift={s} 
+          updateShifts={updateShifts}
+        />
       ))}
       <Dialog open={isShiftDialogOpen} onClose={() => setShiftDialogOpen(false)}>
         <DialogContent>

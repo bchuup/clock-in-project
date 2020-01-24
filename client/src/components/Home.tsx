@@ -73,7 +73,6 @@ const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
       setUsers(updatedUsers);
       goToUsersClockInPage(res.data[0].id);
     }).catch(e => {
-      console.log('error', e);
       setNewUserDialogOpen(false);
       setErrorDialogIsOpen(true);
     })

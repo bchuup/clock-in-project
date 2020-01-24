@@ -40,12 +40,13 @@ const ShiftSignInButtonText: FunctionComponent<ShiftSignInButtonProps> = ({ sign
 } 
 
 interface ShiftContainerProps {
-  shift: Shift
+  shift: Shift,
+  updateShifts: (s: Shift) => void
 }
 
 type EditType = 'in' | 'out' | null;
 
-const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift }) => {
+const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateShifts }) => {
   const [editType, setEditType] = useState<EditType>(null);
   const [signInField, setSignInField] = useState<string>('');
   const [signOutField, setSignOutField] = useState<string>('');
@@ -72,10 +73,10 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift }) => {
       `/api/shifts/${shift.user_id}/edit/${shift.id}`,
       payload
     ).then((res) => {
-      
-      console.log('res', res.data);
+      updateShifts(res.data[0]);
+    }).catch((e) => {
+      console.error(e);
     });
-    
   };
   const defaultTime = () => {
     const signInDate = shift.sign_in_date || undefined;
