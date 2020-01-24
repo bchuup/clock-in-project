@@ -5,7 +5,7 @@ const knex = require('../db/knex');
 router.get('/:userId', async (req, res) => {
   try {
     const requestedUserId = req.params.userId;
-    const shifts = await knex.select().table('shifts').where({ user_id: requestedUserId });
+    const shifts = await knex.select().table('shifts').where({ user_id: requestedUserId, deleted_at: null });
     res.send(shifts);
   } catch (error) {
     return res.sendStatus(500)

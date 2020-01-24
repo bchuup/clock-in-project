@@ -96,6 +96,20 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
       console.error(e);
     });
   };
+  const deleteShift = () => {
+    setDeleteDialogOpen(false);
+    const now = moment().toISOString();
+    const payload = { deleted_at: now }
+    http.put(
+      `/api/shifts/${shift.user_id}/edit/${shift.id}`,
+      payload
+    ).then((res) => {
+      updateShifts(res.data[0]);
+    }).catch((e) => {
+      console.error(e);
+    });
+    console.log('delete shift');
+  };
   const defaultTime = () => {
     const signInDate = shift.sign_in_date || undefined;
     const signOutDate = shift.sign_out_date || undefined;
@@ -112,7 +126,7 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
       <ShiftTitleRow>
         <p>{moment(shift.sign_in_date || '').format('LL')}</p>
         <div>
-          <IconButton size="small">
+          <IconButton onClick={() => setDeleteDialogOpen(true)} size="small">
             <DeleteIcon />
           </IconButton>
         </div>
@@ -139,15 +153,11 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift, updateS
       </Dialog>
       <Dialog open={isDeleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <DialogContent>
-          <TextField
-            type="datetime-local"
-            defaultValue={defaultTime()}
-            onChange={handleFieldChange}
-          />
+          <h3> Are you sure you want to delete this shift? </h3>
         </DialogContent>
-        <ShiftButton onClick={() => editShift()} size="large" color="primary">
-          {editType === 'in' ? 'edit sign in date' : 'sign out'}
-        </ShiftButton>
+        <Button color="secondary" onClick={() => deleteShift()} size="large">
+          DELETE
+        </Button>
       </Dialog>
     </div>
   )

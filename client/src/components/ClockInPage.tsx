@@ -109,13 +109,18 @@ const ClockInPage: React.FunctionComponent = () => {
       <NewShiftBox>
         <ShiftButton onClick={() => setShiftDialogOpen(true)} size="large" color="primary"> sign in now </ShiftButton>
       </NewShiftBox>
-      {shifts.map((s: Shift) => (
-        <ShiftContainer 
-          key={s.id} 
-          shift={s} 
-          updateShifts={updateShifts}
-        />
-      ))}
+      {shifts.map((s: Shift) => {
+        if (!s.deleted_at) {
+          return (
+            <ShiftContainer 
+              key={s.id} 
+              shift={s} 
+              updateShifts={updateShifts}
+            />
+          )
+        } 
+        return null
+      })}
       <Dialog open={isShiftDialogOpen} onClose={() => setShiftDialogOpen(false)}>
         <DialogContent>
           <h2> {moment().format('LLLL')} </h2>
