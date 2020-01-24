@@ -6,7 +6,7 @@ const Page = styled.div`
   margin: auto;
 `
 
-const SubPageLayout = (Component) => {
+const SubPageLayout = (Component: React.ComponentType<any>) => {
   return () => (
     <Page>
       <Component/>

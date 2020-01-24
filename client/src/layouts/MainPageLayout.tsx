@@ -6,7 +6,7 @@ const Page = styled.div`
   height: 100vh;
   width: 100wv;
 ` 
-const MainPageLayout = (Component) => {
+const MainPageLayout = (Component: React.ComponentType<any>) => {
   return () => (
     <Page>
       <Component />
