@@ -15,6 +15,7 @@ import styled from 'styled-components';
 const AppContainer = styled.div`
   max-width: 1275px;
   margin: auto;
+  padding-bottom: 100px;
 ` 
  
 function App() {
@@ -32,9 +33,9 @@ function App() {
         <Link to="/clock-in-page">users</Link>
         <Switch>
           <Route path="/" exact>
-            <Home users={users}/>
+            <Home users={users} setUsers={setUsers}/>
           </Route>
-          <Route path="/clock-in-page" exact>
+          <Route path="/clock-in-page/:name" exact>
             <ClockInPage/>
           </Route>
         </Switch>

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import http from '../http';
 import { User } from '../models';
 import { useHistory } from 'react-router-dom';
+import orderBy from 'lodash/orderBy';
 
 const UserButton = styled(ButtonBase)`
   min-width: 300px;
@@ -36,28 +37,37 @@ const UserList = styled.div`
 
 interface Props {
   users: User[];
+  setUsers: (users: User[]) => void;
 }
 
-const Home: React.FunctionComponent<Props> = ({ users }) => {
+const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
   const [newName, setNewName] = useState('');
   const [homeUsers, setHomeUsers] = useState<User[]>([]);
   const [dialogIsOpen, setDialogOpen] = useState(false);
   const history = useHistory();
   useEffect(() => {
-    setHomeUsers(users);
+    const orderedUsers = orderBy(users, ['created_at'], ['desc'])
+    setHomeUsers(orderedUsers);
   }, [users]) 
 
   const handleClose = () => {
     setDialogOpen(false); 
   }
   const openNameEntryDialog = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       setDialogOpen(true);
     }
   }
 
   const submitNewUser = () => {
-    history.push('/clock-in-page');
+    http.post('/api/users', { name: newName }).then((res) => {
+      const updatedUsers = users.concat(res.data);
+      setUsers(updatedUsers);
+      setDialogOpen(false);
+      history.push(`/clock-in-page/${res.data[0].id}`);
+    }).catch(e => {
+      console.log('error', e);
+    })
   }
 
   return (
@@ -70,7 +80,7 @@ const Home: React.FunctionComponent<Props> = ({ users }) => {
           inputProps={{
             style: { textAlign: 'center' }
           }} 
-          placeholder="new user"
+          placeholder="Enter a new caretaker"
 
         />
       </NameInputRow>
