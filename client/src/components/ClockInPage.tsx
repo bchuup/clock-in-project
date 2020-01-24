@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import SubPageLayout from '../layouts/SubPageLayout';
 import styled from 'styled-components';
-import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogContent } from '@material-ui/core';
 import moment from 'moment';
 import http from '../http';
 import { useParams } from 'react-router-dom';
