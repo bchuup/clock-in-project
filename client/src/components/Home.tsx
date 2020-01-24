@@ -63,11 +63,15 @@ const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
     }
   }
 
+  const goToUsersClockInPage = (userId: number) => {
+    history.push(`/clock-in-page/${userId}`);
+  }
+
   const submitNewUser = () => {
     http.post('/api/users', { name: newName }).then((res) => {
       const updatedUsers = users.concat(res.data);
       setUsers(updatedUsers);
-      history.push(`/clock-in-page/${res.data[0].id}`);
+      goToUsersClockInPage(res.data[0].id);
     }).catch(e => {
       console.log('error', e);
       setNewUserDialogOpen(false);
@@ -92,7 +96,7 @@ const Home: React.FunctionComponent<Props> = ({ users, setUsers }) => {
       <UserList>
       {homeUsers.map((u) => {
         return (
-          <UserButton key={u.id}>
+          <UserButton onClick={() => goToUsersClockInPage(u.id)} key={u.id}>
             <h2>{u.full_name}</h2>
           </UserButton>
         )

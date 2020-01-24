@@ -29,8 +29,6 @@ function App() {
   return (
     <AppContainer>
       <Router>
-        <Link to="/">Home</Link>
-        <Link to="/clock-in-page">users</Link>
         <Switch>
           <Route path="/" exact>
             <Home users={users} setUsers={setUsers}/>
