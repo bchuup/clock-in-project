@@ -59,7 +59,7 @@ const ClockInPage: React.FunctionComponent = () => {
   useEffect(() => {
     const userId = params.userId;
     http.get(`/api/shifts/${userId}`).then((res) => {
-      const orderedShifts = orderBy(res.data, ['sign_in_date'], ['desc'])
+      const orderedShifts = orderBy(res.data, ['created_at'], ['desc'])
       setShifts(orderedShifts);
     }).catch((e) => {
       console.error(e);
@@ -72,8 +72,9 @@ const ClockInPage: React.FunctionComponent = () => {
       user_id: userId
     }
     http.post(`/api/shifts/${userId}/new-shift`, newShift).then((res) => {
-      const updatedShifts = res.data.concat(shifts);
-      setShifts(updatedShifts);
+      const updatedShifts = shifts.concat(res.data);
+      const orderedShifts = orderBy(updatedShifts, ['created_at'], ['desc']);
+      setShifts(orderedShifts);
       setShiftDialogOpen(false);
     }).catch((e) => {
       setShiftDialogOpen(false);
@@ -86,7 +87,7 @@ const ClockInPage: React.FunctionComponent = () => {
         ? incomingShift
         : s
     })
-    const orderedShifts = orderBy(newShifts, ['sign_in_date'], ['desc']);
+    const orderedShifts = orderBy(newShifts, ['created_at'], ['desc']);
     setShifts(orderedShifts);
   }
   return (
