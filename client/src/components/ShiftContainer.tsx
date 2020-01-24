@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button, Dialog, DialogContent, TextField } from '@material-ui/core';
 import moment from 'moment';
 import { Shift } from '../models';
+import http from '../http';
 
 const ShiftBox = styled.div`
   max-width: 400px;
@@ -64,8 +65,18 @@ const ShiftContainer: FunctionComponent<ShiftContainerProps> = ({ shift }) => {
   }
   const editShift = () => {
     setEditType(null);
+    const payload = editType === 'in'
+      ? { sign_in_date: signInField }
+      : { sign_out_date: signOutField }
+    http.put(
+      `/api/shifts/${shift.user_id}/edit/${shift.id}`,
+      payload
+    ).then((res) => {
+      console.log('res', res.data);
+    });
     console.log('sign in', signInField);
     console.log('sign out', signOutField);
+    
   };
   const defaultTime = () => {
     const signInDate = shift.sign_in_date || undefined;

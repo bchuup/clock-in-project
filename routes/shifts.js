@@ -40,8 +40,8 @@ router.put('/:userId/edit/:shiftId', async (req, res) => {
       })
       .update({
         ...req.body
-      });
-      return res.status(200).send(newShift)
+      }, ['*']);
+      return res.send(newShift)
     } else {
       return res.sendStatus(404)
     }
