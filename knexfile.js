@@ -9,7 +9,8 @@ module.exports = {
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
-    searchPath: 'knex,public',
-    pool: { min: 0, max: 7 }
+    searchPath: ['knex', 'public'],
+    pool: { min: 0, max: 7 },
+    ssl: true
   }
 }
